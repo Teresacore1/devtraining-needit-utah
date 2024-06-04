@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_fix">
+    <sys_script_fix action="INSERT_OR_UPDATE">
+        <before>false</before>
+        <description/>
+        <name>Needit record creation</name>
+        <record_for_rollback>true</record_for_rollback>
+        <script>    //    &lt;script&gt;&lt;![CDATA[//Number of NeedIt records to create&#13;
+	var recordsToMake = 0;&#13;
+	&#13;
+	// Declare and initialize variables used in the script&#13;
+	var genNIRec;&#13;
+	var i;&#13;
+	var tableName = "x_58872_needit_needit";&#13;
+	var requestTypeArray = ["facilities","hr","legal"];&#13;
+	var selectRequestType = "";&#13;
+	var selectWhatNeeded = 3;&#13;
+	var pickDate = 1;&#13;
+	var requestedForArray = [{"name":"Fred Luddy","email":"fred.luddy@example.com"},{"name":"Beth Anglin","email":"beth.anglin@example.com"},{"name":"Joe Employee","email":"joe.employee@example.com"}];&#13;
+	var pickUser = 10;&#13;
+		&#13;
+	&#13;
+	//For loop to create records&#13;
+		for (i = 0; i &lt; recordsToMake; i++) {&#13;
+			&#13;
+			//Create an empty record for the NeedIt table&#13;
+			genNIRec = new GlideRecord(tableName);&#13;
+			genNIRec.newRecord();&#13;
+			&#13;
+	&#13;
+			//Select a random value from the requestType array and set the Request Type field value (choice)&#13;
+			selectRequestType = requestTypeArray[(Math.floor(Math.random() * 3))];&#13;
+			genNIRec.setValue("u_request_type",selectRequestType);&#13;
+			&#13;
+			&#13;
+			//Set the What needed field value (choice) from the Request Type and either 1 or 2&#13;
+			selectWhatNeeded = (Math.floor(Math.random()*2) +1);		&#13;
+			genNIRec.setValue("u_what_needed",selectRequestType + selectWhatNeeded);&#13;
+			&#13;
+			//Set the Short description field value (string)&#13;
+			genNIRec.setValue("short_description", "Automatically created NeedIt request: " + selectRequestType + ", " + selectRequestType + selectWhatNeeded);&#13;
+			&#13;
+			//Set the When needed field value (date/time) to a date between yesterday and seven months ago&#13;
+			var rightNow = new GlideDateTime();		&#13;
+			pickDate = (Math.floor(Math.random() * 210) + 1);&#13;
+			rightNow.addDaysUTC(-pickDate);		&#13;
+			genNIRec.setValue("u_when_needed",rightNow.getDate());&#13;
+			&#13;
+			&#13;
+			//Set the Requested for field value (reference) by selecting a random user from requestedForArray.&#13;
+			//Also set the Requested for email field value (string).  The reference field cannot be set in a scoped app&#13;
+			//using the setValue method unless using the sys_id to set the field value.  To set by display name, use &#13;
+			//the GlideElement setDisplayValue method.  gr.&lt;field_name&gt;.setDisplayValue(&lt;value&gt;). &#13;
+			pickUser = (Math.floor(Math.random()*3));&#13;
+			genNIRec.u_requested_for.setDisplayValue(requestedForArray[pickUser].name);&#13;
+			genNIRec.setValue("u_requested_for_email",requestedForArray[pickUser].email.toString());&#13;
+			&#13;
+			&#13;
+			//Set the Priority field value (choice) to a random value&#13;
+			genNIRec.setValue("priority",(Math.floor(Math.random()*5)+1));&#13;
+			&#13;
+			//Set the State field value (choice) to Requested&#13;
+			genNIRec.setValue("state",13);&#13;
+			&#13;
+			//Insert the new NeedIt record into the table&#13;
+			genNIRec.insert();&#13;
+	}//]]&gt;&lt;/script&gt;</script>
+        <sys_class_name>sys_script_fix</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2024-06-03 20:37:13</sys_created_on>
+        <sys_id>9e78784a93a602100b1d30dcebba1070</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Needit record creation</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sys_script_fix_9e78784a93a602100b1d30dcebba1070</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-06-03 20:37:13</sys_updated_on>
+        <unloadable>false</unloadable>
+    </sys_script_fix>
+</record_update>
